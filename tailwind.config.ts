@@ -1,3 +1,4 @@
+import { nextui } from "@nextui-org/theme";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -5,6 +6,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -13,8 +15,17 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        grayDark: "#4D4D4D",
+        grayLine: "#D9D9D9",
+        accent: "#197BC2",
+        accentLight: "#E5F4FF",
+      },
+      screens: {
+        mobilehover: { raw: "(hover:hover)" },
+      },
     },
   },
-  plugins: [],
+  plugins: [nextui()],
 };
 export default config;
