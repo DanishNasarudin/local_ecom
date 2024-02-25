@@ -165,8 +165,32 @@ const SettingIcon = ({
     </svg>
   );
 };
+const ArrowDoubleIcon = ({
+  fill = "currentColor",
+  filled,
+  size,
+  height,
+  width,
+  label,
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={size || width || 24}
+      height={size || height || 24}
+      fill={fill}
+      {...props}
+    >
+      <path d="m6.293 11.293 1.414 1.414L12 8.414l4.293 4.293 1.414-1.414L12 5.586z"></path>
+      <path d="m6.293 16.293 1.414 1.414L12 13.414l4.293 4.293 1.414-1.414L12 10.586z"></path>
+    </svg>
+  );
+};
 
 export {
+  ArrowDoubleIcon,
   CartIcon,
   CouponIcon,
   DashboardIcon,

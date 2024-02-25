@@ -6,9 +6,9 @@ export default function StudioLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <div className="flex">
       <StudioNavbar />
-      {children}
-    </>
+      <div className="mx-16 my-4">{children}</div>
+    </div>
   );
 }
