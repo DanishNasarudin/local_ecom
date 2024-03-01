@@ -40,42 +40,44 @@ const links = [
 ];
 
 const StudioNavbar = () => {
-  const [closeSidebar, setCloseSidebar] = useState(false);
+  const [sidebar, setSidebar] = useState(false);
+
   return (
     <nav
       className={`
       group
     ${
-      !closeSidebar ? "max-w-[200px]" : "max-w-min"
+      !sidebar ? "max-w-[200px]" : "max-w-[64px]"
     } w-full relative left-0 bg-white h-screen border-r-[1px] border-grayLine
     flex flex-col gap-2 p-4
     transition-all`}
     >
       {links.map((val, key) => {
         return (
-          <Link href={val.link} key={key}>
-            <Tooltip
-              isDisabled={!closeSidebar}
-              closeDelay={0}
-              content={val.name}
-              placement="right"
-              size="sm"
+          <Tooltip
+            key={key}
+            isDisabled={!sidebar}
+            closeDelay={0}
+            content={val.name}
+            placement="right"
+            size="sm"
+            radius="sm"
+          >
+            <Button
+              as={Link}
+              href={val.link}
+              startContent={val.icon}
               radius="sm"
-            >
-              <Button
-                startContent={val.icon}
-                radius="sm"
-                size="sm"
-                fullWidth={!closeSidebar}
-                isIconOnly={closeSidebar}
-                className={`
+              size="sm"
+              fullWidth={!sidebar}
+              isIconOnly={sidebar}
+              className={`
                 fill-grayDark text-grayDark bg-transparent mobilehover:hover:bg-accentLight mobilehover:hover:text-accent
-                ${!closeSidebar ? "justify-start" : ""}`}
-              >
-                {!closeSidebar ? val.name : ""}
-              </Button>
-            </Tooltip>
-          </Link>
+                ${!sidebar ? "justify-start" : ""}`}
+            >
+              {!sidebar ? val.name : ""}
+            </Button>
+          </Tooltip>
         );
       })}
       <Button
@@ -90,14 +92,12 @@ const StudioNavbar = () => {
         size="sm"
         startContent={
           <ArrowDoubleIcon
-            className={`${
-              closeSidebar ? "rotate-90" : "-rotate-90"
-            } fill-grayDark`}
+            className={`${sidebar ? "rotate-90" : "-rotate-90"} fill-grayDark`}
             size={18}
           />
         }
         onClick={() => {
-          setCloseSidebar((prev) => (prev = !closeSidebar));
+          setSidebar((prev: boolean) => (prev = !sidebar));
         }}
       />
     </nav>
