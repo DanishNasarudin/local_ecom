@@ -1,6 +1,7 @@
 import { Providers } from "@/lib/providers/providers";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
 import Navbar from "./(components)/Navbar";
 import "./globals.css";
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           {children}
+          <Toaster closeButton richColors />
         </Providers>
       </body>
     </html>

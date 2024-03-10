@@ -8,7 +8,7 @@ export default function StudioLayout({
   return (
     <div className="flex">
       <StudioNavbar />
-      <div className="mx-16 my-4">{children}</div>
+      <div className="mx-16 my-4 w-full">{children}</div>
     </div>
   );
 }

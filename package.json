@@ -10,19 +10,25 @@
     "db:generate": "drizzle-kit generate:pg",
     "db:push": "drizzle-kit push:pg",
     "db:pull": "drizzle-kit introspect:pg",
-    "db:drop": "drizzle-kit drop:pg",
+    "db:drop": "drizzle-kit drop",
     "db:check": "drizzle-kit check:pg",
-    "db:studio": "drizzle-kit studio --port 4000 --verbose"
+    "db:studio": "drizzle-kit studio --port 4000 --verbose",
+    "db:migrate": "tsx db/migration.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.0",
     "@nextui-org/react": "^2.2.9",
+    "dotenv": "^16.4.5",
     "drizzle-orm": "^0.29.4",
     "framer-motion": "^11.0.6",
     "next": "14.1.0",
     "postgres": "^3.4.3",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "sonner": "^1.4.3",
+    "tsx": "^4.7.1",
+    "use-debounce": "^10.0.0",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",

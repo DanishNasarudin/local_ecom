@@ -15,6 +15,7 @@ const SearchIcon = ({
   height,
   width,
   label,
+  className,
   ...props
 }: IconProps) => {
   return (
@@ -24,6 +25,7 @@ const SearchIcon = ({
       width={size || width || 24}
       height={size || height || 24}
       fill={fill}
+      className={className}
       {...props}
     >
       <path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
@@ -37,6 +39,7 @@ const CartIcon = ({
   height,
   width,
   label,
+  className,
   ...props
 }: IconProps) => {
   return (
@@ -46,6 +49,7 @@ const CartIcon = ({
       width={size || width || 24}
       height={size || height || 24}
       fill={fill}
+      className={className}
       {...props}
     >
       <path d="M5 22h14c1.103 0 2-.897 2-2V9a1 1 0 0 0-1-1h-3V7c0-2.757-2.243-5-5-5S7 4.243 7 7v1H4a1 1 0 0 0-1 1v11c0 1.103.897 2 2 2zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v1H9V7zm-4 3h2v2h2v-2h6v2h2v-2h2l.002 10H5V10z"></path>
@@ -59,6 +63,7 @@ const UserIcon = ({
   height,
   width,
   label,
+  className,
   ...props
 }: IconProps) => {
   return (
@@ -68,6 +73,7 @@ const UserIcon = ({
       width={size || width || 24}
       height={size || height || 24}
       fill={fill}
+      className={className}
       {...props}
     >
       <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm9 11v-1a7 7 0 0 0-7-7h-4a7 7 0 0 0-7 7v1h2v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1z"></path>
@@ -82,6 +88,7 @@ const DashboardIcon = ({
   height,
   width,
   label,
+  className,
   ...props
 }: IconProps) => {
   return (
@@ -91,6 +98,7 @@ const DashboardIcon = ({
       width={size || width || 24}
       height={size || height || 24}
       fill={fill}
+      className={className}
       {...props}
     >
       <path d="M4 13h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1zm-1 7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v4zm10 0a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v7zm1-10h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1z"></path>
@@ -104,6 +112,7 @@ const OrdersIcon = ({
   height,
   width,
   label,
+  className,
   ...props
 }: IconProps) => {
   return (
@@ -113,6 +122,7 @@ const OrdersIcon = ({
       width={size || width || 24}
       height={size || height || 24}
       fill={fill}
+      className={className}
       {...props}
     >
       <path d="M21 11h-3V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v14c0 1.654 1.346 3 3 3h14c1.654 0 3-1.346 3-3v-6a1 1 0 0 0-1-1zM5 19a1 1 0 0 1-1-1V5h12v13c0 .351.061.688.171 1H5zm15-1a1 1 0 0 1-2 0v-5h2v5z"></path>
@@ -127,6 +137,7 @@ const CouponIcon = ({
   height,
   width,
   label,
+  className,
   ...props
 }: IconProps) => {
   return (
@@ -136,6 +147,7 @@ const CouponIcon = ({
       width={size || width || 24}
       height={size || height || 24}
       fill={fill}
+      className={className}
       {...props}
     >
       <path d="M21 5H3a1 1 0 0 0-1 1v4h.893c.996 0 1.92.681 2.08 1.664A2.001 2.001 0 0 1 3 14H2v4a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-4h-1a2.001 2.001 0 0 1-1.973-2.336c.16-.983 1.084-1.664 2.08-1.664H22V6a1 1 0 0 0-1-1zM9 9a1 1 0 1 1 0 2 1 1 0 1 1 0-2zm-.8 6.4 6-8 1.6 1.2-6 8-1.6-1.2zM15 15a1 1 0 1 1 0-2 1 1 0 1 1 0 2z"></path>
@@ -149,6 +161,7 @@ const SettingIcon = ({
   height,
   width,
   label,
+  className,
   ...props
 }: IconProps) => {
   return (
@@ -158,6 +171,7 @@ const SettingIcon = ({
       width={size || width || 24}
       height={size || height || 24}
       fill={fill}
+      className={className}
       {...props}
     >
       <path d="M12 16c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4zm0-6c1.084 0 2 .916 2 2s-.916 2-2 2-2-.916-2-2 .916-2 2-2z"></path>
@@ -172,6 +186,7 @@ const ArrowDoubleIcon = ({
   height,
   width,
   label,
+  className,
   ...props
 }: IconProps) => {
   return (
@@ -181,6 +196,7 @@ const ArrowDoubleIcon = ({
       width={size || width || 24}
       height={size || height || 24}
       fill={fill}
+      className={className}
       {...props}
     >
       <path d="m6.293 11.293 1.414 1.414L12 8.414l4.293 4.293 1.414-1.414L12 5.586z"></path>
@@ -188,14 +204,167 @@ const ArrowDoubleIcon = ({
     </svg>
   );
 };
+const FilterIcon = ({
+  fill = "currentColor",
+  filled,
+  size,
+  height,
+  width,
+  label,
+  className,
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={size || width || 24}
+      height={size || height || 24}
+      fill={fill}
+      className={className}
+      {...props}
+    >
+      <path d="M21 3H5a1 1 0 0 0-1 1v2.59c0 .523.213 1.037.583 1.407L10 13.414V21a1.001 1.001 0 0 0 1.447.895l4-2c.339-.17.553-.516.553-.895v-5.586l5.417-5.417c.37-.37.583-.884.583-1.407V4a1 1 0 0 0-1-1zm-6.707 9.293A.996.996 0 0 0 14 13v5.382l-2 1V13a.996.996 0 0 0-.293-.707L6 6.59V5h14.001l.002 1.583-5.71 5.71z"></path>
+    </svg>
+  );
+};
+const SortIcon = ({
+  fill = "currentColor",
+  filled,
+  size,
+  height,
+  width,
+  label,
+  className,
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={size || width || 24}
+      height={size || height || 24}
+      fill={fill}
+      className={className}
+      {...props}
+    >
+      <path d="M8 16H4l6 6V2H8zm6-11v17h2V8h4l-6-6z"></path>
+    </svg>
+  );
+};
+const CopyIcon = ({
+  fill = "currentColor",
+  filled,
+  size,
+  height,
+  width,
+  label,
+  className,
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={size || width || 24}
+      height={size || height || 24}
+      fill={fill}
+      className={className}
+      {...props}
+    >
+      <path d="M20 2H10c-1.103 0-2 .897-2 2v4H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2v-4h4c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM4 20V10h10l.002 10H4zm16-6h-4v-4c0-1.103-.897-2-2-2h-4V4h10v10z"></path>
+    </svg>
+  );
+};
+const DetailIcon = ({
+  fill = "currentColor",
+  filled,
+  size,
+  height,
+  width,
+  label,
+  className,
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={size || width || 24}
+      height={size || height || 24}
+      fill={fill}
+      className={className}
+      {...props}
+    >
+      <path d="M20 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zM4 19V5h16l.002 14H4z"></path>
+      <path d="M6 7h12v2H6zm0 4h12v2H6zm0 4h6v2H6z"></path>
+    </svg>
+  );
+};
+const EditIcon = ({
+  fill = "currentColor",
+  filled,
+  size,
+  height,
+  width,
+  label,
+  className,
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={size || width || 24}
+      height={size || height || 24}
+      fill={fill}
+      className={className}
+      {...props}
+    >
+      <path d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583v4.43zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585 1.594-1.58zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006v-1.589z"></path>
+      <path d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2z"></path>
+    </svg>
+  );
+};
+const DeleteIcon = ({
+  fill = "currentColor",
+  filled,
+  size,
+  height,
+  width,
+  label,
+  className,
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={size || width || 24}
+      height={size || height || 24}
+      fill={fill}
+      className={className}
+      {...props}
+    >
+      <path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z"></path>
+      <path d="M9 10h2v8H9zm4 0h2v8h-2z"></path>
+    </svg>
+  );
+};
 
 export {
   ArrowDoubleIcon,
   CartIcon,
+  CopyIcon,
   CouponIcon,
   DashboardIcon,
+  DeleteIcon,
+  DetailIcon,
+  EditIcon,
+  FilterIcon,
   OrdersIcon,
   SearchIcon,
   SettingIcon,
+  SortIcon,
   UserIcon,
 };
