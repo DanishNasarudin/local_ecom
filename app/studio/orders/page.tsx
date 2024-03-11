@@ -21,7 +21,11 @@ export type OrderDataType = typeof data;
 
 const containsSearchTerm = (value: any, searchTerm: string): boolean => {
   if (typeof value === "string") {
-    return value.toLowerCase().includes(searchTerm.toLowerCase());
+    const terms = searchTerm.split(" ");
+
+    return terms.every((term) =>
+      value.toLowerCase().includes(term.toLowerCase())
+    );
   } else if (Array.isArray(value)) {
     return value.some((item) => containsSearchTerm(item, searchTerm));
   } else if (typeof value === "object" && value !== null) {

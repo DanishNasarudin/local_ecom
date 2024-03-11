@@ -7,6 +7,8 @@ import {
 } from "@/app/(components)/Icons";
 import {
   Button,
+  Divider,
+  Image,
   Modal,
   ModalBody,
   ModalContent,
@@ -86,20 +88,22 @@ const OrderTableContent = ({ data }: Props) => {
               <div className="whitespace-nowrap overflow-ellipsis overflow-hidden max-w-[100px]">
                 {data.id}
               </div>
-              <button
+              <Button
                 className="mobilehover:group-hover/idhover:bg-zinc-300 transition-all
-              bg-transparent rounded-lg w-[24px] h-[24px] flex justify-center items-center
+              bg-transparent rounded-lg min-w-[24px] w-[24px] h-[24px] flex justify-center items-center
               absolute right-0 top-[50%] translate-y-[-50%]"
                 onClick={() => {
                   navigator.clipboard.writeText(String(data.id));
                   toast("Copied!");
                 }}
-              >
-                <CopyIcon
-                  size={16}
-                  className="fill-transparent mobilehover:group-hover/idhover:fill-zinc-600 transition-all"
-                />
-              </button>
+                isIconOnly
+                startContent={
+                  <CopyIcon
+                    size={16}
+                    className="fill-transparent mobilehover:group-hover/idhover:fill-zinc-600 transition-all"
+                  />
+                }
+              />
             </div>
           );
         case "product_name":
@@ -121,30 +125,32 @@ const OrderTableContent = ({ data }: Props) => {
           return (
             <div className=" relative flex items-center gap-2">
               <Tooltip content="Details" size="sm">
-                <button
+                <Button
                   className=" mobilehover:hover:bg-zinc-300 transition-all
-                  bg-transparent rounded-md w-[24px] h-[24px] flex justify-center items-center"
+                  bg-transparent rounded-md min-w-[24px] w-[24px] h-[24px] flex justify-center items-center"
                   onClick={() => handleOpen(data.id)}
-                >
-                  <DetailIcon size={16} />
-                </button>
+                  isIconOnly
+                  startContent={<DetailIcon size={16} />}
+                />
               </Tooltip>
               <Tooltip content="Edit user" size="sm">
-                <button
+                <Button
                   className=" mobilehover:hover:bg-zinc-300 transition-all
-                  bg-transparent rounded-md w-[24px] h-[24px] flex justify-center items-center"
-                >
-                  <EditIcon size={16} />
-                </button>
+                  bg-transparent rounded-md min-w-[24px] w-[24px] h-[24px] flex justify-center items-center"
+                  onClick={() => handleOpen(data.id)}
+                  isIconOnly
+                  startContent={<EditIcon size={16} />}
+                />
               </Tooltip>
               <Tooltip color="danger" content="Delete user" size="sm">
-                <button
+                <Button
                   className=" mobilehover:hover:bg-zinc-300 transition-all
-                  bg-transparent rounded-md w-[24px] h-[24px] flex justify-center items-center
+                  bg-transparent rounded-md min-w-[24px] w-[24px] h-[24px] flex justify-center items-center
                   text-danger"
-                >
-                  <DeleteIcon size={16} />
-                </button>
+                  onClick={() => handleOpen(data.id)}
+                  isIconOnly
+                  startContent={<DeleteIcon size={16} />}
+                />
               </Tooltip>
             </div>
           );
@@ -162,17 +168,20 @@ const OrderTableContent = ({ data }: Props) => {
         fullWidth
         radius="sm"
         selectionMode="multiple"
+        disabledBehavior="selection"
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
       >
         <TableHeader columns={columns}>
           {(column) => (
-            <TableColumn key={column.key}>{column.label}</TableColumn>
+            <TableColumn key={column.key} aria-label={column.key}>
+              {column.label}
+            </TableColumn>
           )}
         </TableHeader>
         <TableBody emptyContent={"No Orders."} items={data}>
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.id} aria-label={item.id}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
@@ -184,26 +193,50 @@ const OrderTableContent = ({ data }: Props) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Test</ModalHeader>
+              <ModalHeader>Order Details</ModalHeader>
               <ModalBody>
                 {data.map((item) => {
                   if (item.id === dataId) {
                     return (
-                      <>
-                        <p>{item.id}</p>
-                        <p>{item.customer?.customer_name}</p>
-                        <p>{item.customer?.customer_email}</p>
-                        <p>Products:</p>
-                        {item.order_product.length > 1
+                      <div className="text-xs flex flex-col gap-1">
+                        <p>Order ID: {item.id}</p>
+                        <p>Date Purchased: {item.order_date}</p>
+                        <p>Order Status: {item.order_status}</p>
+                        <Divider className="my-2" />
+                        <p className="py-1">Customer Details: </p>
+                        <p>Customer Name: {item.customer?.customer_name}</p>
+                        <p>Customer Email: {item.customer?.customer_email}</p>
+                        <p>Customer ID: {item.customer?.id}</p>
+                        <Divider className="my-2" />
+                        <p className="py-1">Products:</p>
+                        {item.order_product.length > 0
                           ? item.order_product.map((order) => {
                               return (
-                                <>
-                                  <p>{order.product.product_name}</p>
-                                </>
+                                <div className="flex justify-between">
+                                  <div className="flex gap-2">
+                                    <Image
+                                      src={
+                                        JSON.parse(
+                                          JSON.stringify(
+                                            order.product.product_image
+                                          )
+                                        ).url
+                                      }
+                                      width={16}
+                                    />
+                                    <p>{order.product.product_name}</p>
+                                  </div>
+                                  <p>RM {order.product.product_price}</p>
+                                </div>
                               );
                             })
                           : item.order_product[0].product.product_name}
-                      </>
+                        <Divider className="my-2" />
+                        <div className="flex justify-between font-bold">
+                          <p className="text-right font-bold">Total Price:</p>
+                          <p>RM {item.total_price}</p>
+                        </div>
+                      </div>
                     );
                   } else {
                     return;

@@ -71,8 +71,8 @@ const OrderTableHead = (props: Props) => {
             classNames={{
               svg: "w-4 h-4",
             }}
-            data-isSearch={Boolean(searchTerm)}
-            className="data-[isSearch=true]:block data-[isSearch=false]:hidden"
+            data-issearch={Boolean(searchTerm)}
+            className="data-[issearch=true]:block data-[issearch=false]:hidden"
           />
         }
         className={`[&>div]:[&>div]:!min-h-[16px] [&>div]:[&>div]:h-[32px] [&>input]:[&>div]:[&>div]:[&>div]:text-[12px] [&>div]:[&>div]:max-w-[150px] [&>div]:[&>div]:border-[1px]`}

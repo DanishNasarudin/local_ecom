@@ -28,3 +28,15 @@ export function debounceFunc<T extends (...args: any[]) => void>(
     timeout = setTimeout(later, wait);
   };
 }
+
+export const customFilter = (textValue: string, inputValue: string) => {
+  if (Boolean(inputValue)) {
+    const terms = inputValue.split(" ");
+
+    return terms.every((term) =>
+      textValue.toLowerCase().includes(term.toLowerCase())
+    );
+  }
+
+  return true;
+};

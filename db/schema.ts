@@ -77,3 +77,5 @@ export const orderProductRelations = relations(ordersToProducts, ({ one }) => ({
     references: [products.id],
   }),
 }));
+
+// order item because products quantity is the stock, not the quantity of pruchased
