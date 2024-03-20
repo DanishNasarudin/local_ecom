@@ -1,5 +1,6 @@
 "use client";
 import { FilterIcon, SearchIcon, SortIcon } from "@/app/(components)/Icons";
+import { useOrderData } from "@/lib/store";
 import { createURL, debounceFunc } from "@/lib/utils";
 import {
   Button,
@@ -56,6 +57,9 @@ const OrderTableHead = (props: Props) => {
     }, 500),
     []
   );
+  const data = useOrderData((state) => state.data);
+
+  // console.log(data);
 
   return (
     <div className="flex gap-2 w-max">

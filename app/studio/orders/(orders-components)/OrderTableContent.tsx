@@ -5,15 +5,9 @@ import {
   DetailIcon,
   EditIcon,
 } from "@/app/(components)/Icons";
+import { useOrderData } from "@/lib/store";
 import {
   Button,
-  Divider,
-  Image,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
   Table,
   TableBody,
   TableCell,
@@ -25,7 +19,8 @@ import {
 } from "@nextui-org/react";
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { OrderDataType } from "../orders/page";
+import { OrderDataType } from "../page";
+import OrderDetailModal from "./OrderDetailModal";
 
 const columns = [
   {
@@ -62,7 +57,15 @@ type Props = {
 type Selection = "all" | Set<any>;
 
 const OrderTableContent = ({ data }: Props) => {
+  const setData = useOrderData((state) => state.setData);
   // console.log(data);
+
+  React.useEffect(() => {
+    if (data) {
+      setData(data);
+    }
+  }, [data]);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [dataId, setDataId] = useState("");
 
@@ -189,72 +192,13 @@ const OrderTableContent = ({ data }: Props) => {
           )}
         </TableBody>
       </Table>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader>Order Details</ModalHeader>
-              <ModalBody>
-                {data.map((item) => {
-                  if (item.id === dataId) {
-                    return (
-                      <div className="text-xs flex flex-col gap-1">
-                        <p>Order ID: {item.id}</p>
-                        <p>Date Purchased: {item.order_date}</p>
-                        <p>Order Status: {item.order_status}</p>
-                        <Divider className="my-2" />
-                        <p className="py-1">Customer Details: </p>
-                        <p>Customer Name: {item.customer?.customer_name}</p>
-                        <p>Customer Email: {item.customer?.customer_email}</p>
-                        <p>Customer ID: {item.customer?.id}</p>
-                        <Divider className="my-2" />
-                        <p className="py-1">Products:</p>
-                        {item.order_product.length > 0
-                          ? item.order_product.map((order) => {
-                              return (
-                                <div className="flex justify-between">
-                                  <div className="flex gap-2">
-                                    <Image
-                                      src={
-                                        JSON.parse(
-                                          JSON.stringify(
-                                            order.product.product_image
-                                          )
-                                        ).url
-                                      }
-                                      width={16}
-                                    />
-                                    <p>{order.product.product_name}</p>
-                                  </div>
-                                  <p>RM {order.product.product_price}</p>
-                                </div>
-                              );
-                            })
-                          : item.order_product[0].product.product_name}
-                        <Divider className="my-2" />
-                        <div className="flex justify-between font-bold">
-                          <p className="text-right font-bold">Total Price:</p>
-                          <p>RM {item.total_price}</p>
-                        </div>
-                      </div>
-                    );
-                  } else {
-                    return;
-                  }
-                })}
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <OrderDetailModal
+        modalDefaults={{
+          isOpen: isOpen,
+          onClose: onClose,
+        }}
+        dataId={dataId}
+      />
     </div>
   );
 };

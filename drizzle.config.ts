@@ -9,6 +9,8 @@ if (process.env.NODE_ENV === "production") {
   config({ path: ".dev.env" });
 }
 
+console.log(process.env.DATABASE_URL);
+
 export default defineConfig({
   schema: "./db/schema.ts",
   out: "./db",

@@ -1,0 +1,1 @@
+ALTER TABLE "product_category" ADD COLUMN "category_name" varchar(256);

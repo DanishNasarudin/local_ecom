@@ -1,6 +1,6 @@
 {
-  "id": "8e02c7e4-b8ef-46c2-b1a5-63b9fc161640",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "0dc67363-cd4a-4419-81cc-81369b0fa4dc",
+  "prevId": "8e02c7e4-b8ef-46c2-b1a5-63b9fc161640",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -365,6 +365,12 @@
         "parent_category_id": {
           "name": "parent_category_id",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "category_name": {
+          "name": "category_name",
+          "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false
         }

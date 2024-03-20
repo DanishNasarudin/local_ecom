@@ -1,43 +1,28 @@
 import db from "@/db/db";
-import OrderTableContent from "../(studio-components)/OrderTableContent";
-import OrderTableHead from "../(studio-components)/OrderTableHead";
+import { containsSearchTerm } from "@/lib/utils";
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-const data = await db.query.orders.findMany({
+const data = await db.query.order_detail.findMany({
   with: {
-    order_product: {
+    order_item: {
       with: {
-        product: true,
+        product_item: {
+          with: {
+            product_image: true,
+          },
+        },
       },
     },
-    customer: true,
   },
 });
 
 export type OrderDataType = typeof data;
 
-const containsSearchTerm = (value: any, searchTerm: string): boolean => {
-  if (typeof value === "string") {
-    const terms = searchTerm.split(" ");
-
-    return terms.every((term) =>
-      value.toLowerCase().includes(term.toLowerCase())
-    );
-  } else if (Array.isArray(value)) {
-    return value.some((item) => containsSearchTerm(item, searchTerm));
-  } else if (typeof value === "object" && value !== null) {
-    return Object.values(value).some((innerValue) =>
-      containsSearchTerm(innerValue, searchTerm)
-    );
-  }
-  return false;
-};
-
 const Orders = async ({ searchParams }: Props) => {
-  // console.log(data);
+  console.log(data[1].order_item[1].product_item);
   let filteredData = [...data];
 
   const searchTerm = Array.isArray(searchParams.search)
@@ -55,8 +40,8 @@ const Orders = async ({ searchParams }: Props) => {
     <div className="flex flex-col gap-8">
       <div>Orders</div>
       <div className="bg-white border-[1px] border-grayLine p-4 rounded-lg flex flex-col gap-4">
-        <OrderTableHead />
-        <OrderTableContent data={filteredData} />
+        {/* <OrderTableHead />
+        <OrderTableContent data={filteredData} /> */}
       </div>
     </div>
   );
