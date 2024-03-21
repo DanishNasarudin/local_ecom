@@ -13,10 +13,13 @@ import {
 } from "@nextui-org/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
+import { OrderStatusType } from "../page";
 
-type Props = {};
+type Props = {
+  status: OrderStatusType;
+};
 
-const OrderTableHead = (props: Props) => {
+const OrderTableHead = ({ status }: Props) => {
   const filterDropdown = [
     {
       key: "name",
@@ -62,77 +65,84 @@ const OrderTableHead = (props: Props) => {
   // console.log(data);
 
   return (
-    <div className="flex gap-2 w-max">
-      <Input
-        variant="bordered"
-        placeholder="Search.."
-        size="sm"
-        radius="sm"
-        startContent={<SearchIcon className="fill-grayDark" size={16} />}
-        endContent={
-          <CircularProgress
-            aria-label="Loading..."
-            classNames={{
-              svg: "w-4 h-4",
-            }}
-            data-issearch={Boolean(searchTerm)}
-            className="data-[issearch=true]:block data-[issearch=false]:hidden"
-          />
-        }
-        className={`[&>div]:[&>div]:!min-h-[16px] [&>div]:[&>div]:h-[32px] [&>input]:[&>div]:[&>div]:[&>div]:text-[12px] [&>div]:[&>div]:max-w-[150px] [&>div]:[&>div]:border-[1px]`}
-        onValueChange={(e) => {
-          setSearchTerm(e);
-          debouncedSetSearchParams(e);
-        }}
-      />
-      <div className="flex gap-2">
-        <Dropdown placement="bottom-start">
-          <DropdownTrigger>
-            <Button
-              variant="light"
-              radius="sm"
-              size="sm"
-              startContent={<FilterIcon className="fill-grayDark" size={16} />}
-            >
-              Filter
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Dynamic Actions" items={filterDropdown}>
-            {(item) => (
-              <DropdownItem
-                key={item.key}
-                color={item.key === "delete" ? "danger" : "default"}
-                className={item.key === "delete" ? "text-danger" : ""}
+    <div className="flex justify-between">
+      <div className="flex gap-2 w-max">
+        <Input
+          variant="bordered"
+          placeholder="Search.."
+          size="sm"
+          radius="sm"
+          startContent={<SearchIcon className="fill-grayDark" size={16} />}
+          endContent={
+            <CircularProgress
+              aria-label="Loading..."
+              classNames={{
+                svg: "w-4 h-4",
+              }}
+              data-issearch={Boolean(searchTerm)}
+              className="data-[issearch=true]:block data-[issearch=false]:hidden"
+            />
+          }
+          className={`[&>div]:[&>div]:!min-h-[16px] [&>div]:[&>div]:h-[32px] [&>input]:[&>div]:[&>div]:[&>div]:text-[12px] [&>div]:[&>div]:max-w-[150px] [&>div]:[&>div]:border-[1px]`}
+          onValueChange={(e) => {
+            setSearchTerm(e);
+            debouncedSetSearchParams(e);
+          }}
+        />
+        <div className="flex gap-2">
+          <Dropdown placement="bottom-start">
+            <DropdownTrigger>
+              <Button
+                variant="light"
+                radius="sm"
+                size="sm"
+                startContent={
+                  <FilterIcon className="fill-grayDark" size={16} />
+                }
               >
-                {item.label}
-              </DropdownItem>
-            )}
-          </DropdownMenu>
-        </Dropdown>
-        <Dropdown placement="bottom-start">
-          <DropdownTrigger>
-            <Button
-              variant="light"
-              radius="sm"
-              size="sm"
-              startContent={<SortIcon className="fill-grayDark" size={16} />}
-            >
-              Sort
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Dynamic Actions" items={sortDropdown}>
-            {(item) => (
-              <DropdownItem
-                key={item.key}
-                color={item.key === "delete" ? "danger" : "default"}
-                className={item.key === "delete" ? "text-danger" : ""}
+                Filter
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Dynamic Actions" items={filterDropdown}>
+              {(item) => (
+                <DropdownItem
+                  key={item.key}
+                  color={item.key === "delete" ? "danger" : "default"}
+                  className={item.key === "delete" ? "text-danger" : ""}
+                >
+                  {item.label}
+                </DropdownItem>
+              )}
+            </DropdownMenu>
+          </Dropdown>
+          <Dropdown placement="bottom-start">
+            <DropdownTrigger>
+              <Button
+                variant="light"
+                radius="sm"
+                size="sm"
+                startContent={<SortIcon className="fill-grayDark" size={16} />}
               >
-                {item.label}
-              </DropdownItem>
-            )}
-          </DropdownMenu>
-        </Dropdown>
+                Sort
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Dynamic Actions" items={sortDropdown}>
+              {(item) => (
+                <DropdownItem
+                  key={item.key}
+                  color={item.key === "delete" ? "danger" : "default"}
+                  className={item.key === "delete" ? "text-danger" : ""}
+                >
+                  {item.label}
+                </DropdownItem>
+              )}
+            </DropdownMenu>
+          </Dropdown>
+        </div>
       </div>
+      <Button size="sm" radius="sm">
+        + Custom Order
+      </Button>
     </div>
   );
 };

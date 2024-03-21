@@ -15,6 +15,13 @@
       "when": 1710940741458,
       "tag": "0001_nebulous_demogoblin",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1711024956260,
+      "tag": "0002_jazzy_fat_cobra",
+      "breakpoints": true
     }
   ]
 }

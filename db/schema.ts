@@ -136,6 +136,7 @@ export const variation_option_relations = relations(
       references: [variation.id],
     }),
     product_variation: many(product_variation),
+    order_item: many(order_item),
   })
 );
 
@@ -237,6 +238,9 @@ export const order_item = pgTable("order_item", {
   order_id: integer("order_id").references(() => order_detail.id),
   qty: integer("qty"),
   price: integer("price"),
+  variation_option: integer("variation_option").references(
+    () => variation_option.id
+  ),
 });
 
 export const order_item_relations = relations(order_item, ({ one, many }) => ({
@@ -249,6 +253,10 @@ export const order_item_relations = relations(order_item, ({ one, many }) => ({
     references: [product_item.id],
   }),
   user_review: many(user_review),
+  variation_option: one(variation_option, {
+    fields: [order_item.variation_option],
+    references: [variation_option.id],
+  }),
 }));
 
 //order items need to include other things such as variation id. product id is good reference,

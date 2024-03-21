@@ -52,11 +52,15 @@ const columns = [
 
 type Props = {
   data: OrderDataType;
+  status: {
+    id: number;
+    status: string | null;
+  }[];
 };
 
 type Selection = "all" | Set<any>;
 
-const OrderTableContent = ({ data }: Props) => {
+const OrderTableContent = ({ data, status }: Props) => {
   const setData = useOrderData((state) => state.setData);
   // console.log(data);
 
@@ -112,18 +116,15 @@ const OrderTableContent = ({ data }: Props) => {
         case "product_name":
           return (
             <div className="text-xs">
-              {data.order_product[0].product.product_name}{" "}
-              {data.order_product.length > 1
-                ? `[+${data.order_product.length - 1}]`
-                : ""}
+              {data.order_item[0].product_item?.product?.product_name}{" "}
             </div>
           );
         case "order_date":
           return <div className="text-xs">{data.order_date}</div>;
         case "total_price":
-          return <div className="text-xs">{data.total_price}</div>;
+          return <div className="text-xs">{data.order_total}</div>;
         case "order_status":
-          return <div className="text-xs">{data.order_status}</div>;
+          return <div className="text-xs">{data.order_status?.status}</div>;
         case "actions":
           return (
             <div className=" relative flex items-center gap-2">
@@ -131,7 +132,7 @@ const OrderTableContent = ({ data }: Props) => {
                 <Button
                   className=" mobilehover:hover:bg-zinc-300 transition-all
                   bg-transparent rounded-md min-w-[24px] w-[24px] h-[24px] flex justify-center items-center"
-                  onClick={() => handleOpen(data.id)}
+                  onClick={() => handleOpen(String(data.id))}
                   isIconOnly
                   startContent={<DetailIcon size={16} />}
                 />
@@ -140,7 +141,7 @@ const OrderTableContent = ({ data }: Props) => {
                 <Button
                   className=" mobilehover:hover:bg-zinc-300 transition-all
                   bg-transparent rounded-md min-w-[24px] w-[24px] h-[24px] flex justify-center items-center"
-                  onClick={() => handleOpen(data.id)}
+                  onClick={() => handleOpen(String(data.id))}
                   isIconOnly
                   startContent={<EditIcon size={16} />}
                 />
@@ -150,7 +151,7 @@ const OrderTableContent = ({ data }: Props) => {
                   className=" mobilehover:hover:bg-zinc-300 transition-all
                   bg-transparent rounded-md min-w-[24px] w-[24px] h-[24px] flex justify-center items-center
                   text-danger"
-                  onClick={() => handleOpen(data.id)}
+                  onClick={() => handleOpen(String(data.id))}
                   isIconOnly
                   startContent={<DeleteIcon size={16} />}
                 />
@@ -174,6 +175,7 @@ const OrderTableContent = ({ data }: Props) => {
         disabledBehavior="selection"
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
+        removeWrapper
       >
         <TableHeader columns={columns}>
           {(column) => (
@@ -184,7 +186,7 @@ const OrderTableContent = ({ data }: Props) => {
         </TableHeader>
         <TableBody emptyContent={"No Orders."} items={data}>
           {(item) => (
-            <TableRow key={item.id} aria-label={item.id}>
+            <TableRow key={item.id} aria-label={String(item.id)}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
@@ -198,6 +200,7 @@ const OrderTableContent = ({ data }: Props) => {
           onClose: onClose,
         }}
         dataId={dataId}
+        status={status}
       />
     </div>
   );

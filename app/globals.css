@@ -26,3 +26,8 @@ body {
     text-wrap: balance;
   }
 }
+
+body > div[data-slot="popover"] {
+  width: auto !important;
+  /* max-height: 800px !important; */
+}
