@@ -9,6 +9,8 @@ type OrderDataStore = {
 export const useOrderData = create<OrderDataStore>((set) => ({
   data: [],
   setData: async (data) => {
-    set(() => ({ data: data }));
+    set(() => {
+      return { data: data };
+    });
   },
 }));

@@ -1,4 +1,6 @@
+import { updateOrderDetail } from "@/app/(serverActions)/orderDetails";
 import { useOrderData } from "@/lib/store";
+import { nextuiOnSelect } from "@/lib/utils";
 import {
   Button,
   Divider,
@@ -13,8 +15,15 @@ import {
   PopoverTrigger,
   Select,
   SelectItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
 } from "@nextui-org/react";
 import React from "react";
+import { OrderDataType } from "../page";
 
 type Props = {
   modalDefaults: {
@@ -28,70 +37,82 @@ type Props = {
   }[];
 };
 
-type OrderDetailModalFlat = {
-  order_id: number;
-  order_date: string | null;
-  order_total: number | null;
-  order_status: string | null | undefined;
-  user_id: number | null | undefined;
-  user_name: string | null | undefined;
-  user_email: string | null | undefined;
-  products: {
-    product_id: number | undefined;
-    product_qty: number | null;
-    product_price: number | null;
-    product_name: string | null | undefined;
-    product_image: {
-      image_id: number;
-      image_src: string | null;
-    }[];
-  }[];
-}[];
+const rows = [
+  {
+    key: "1",
+    name: "Tony Reichert",
+    role: "CEO",
+    status: "Active",
+  },
+  {
+    key: "2",
+    name: "Zoey Lang",
+    role: "Technical Lead",
+    status: "Paused",
+  },
+  {
+    key: "3",
+    name: "Jane Fisher",
+    role: "Senior Developer",
+    status: "Active",
+  },
+  {
+    key: "4",
+    name: "William Howard",
+    role: "Community Manager",
+    status: "Vacation",
+  },
+];
+
+const columns = [
+  {
+    key: "product_item.product.product_name",
+    label: "Name",
+  },
+  {
+    key: "qty",
+    label: "Qty",
+  },
+  {
+    key: "price",
+    label: "Price",
+  },
+];
 
 const OrderDetailModal = ({ modalDefaults, dataId, status }: Props) => {
   const data = useOrderData((state) => state.data);
 
-  const [dataObj, setDataObj] = React.useState<OrderDetailModalFlat>([]);
+  const renderCell = React.useCallback(
+    (data: OrderDataType[0]["order_item"][0], columnKey: React.Key) => {
+      const cellValue =
+        data[columnKey as keyof OrderDataType[0]["order_item"][0]];
 
-  React.useEffect(() => {
-    const newData = data.flatMap((order) => {
-      if (!order.id || !order.order_date || !order.order_total) return [];
+      // console.log(columnKey);
 
-      return {
-        order_id: order.id,
-        order_date: order.order_date,
-        order_total: order.order_total,
-        order_status: order.order_status?.status || "",
-        user_id: order.user?.id || 0,
-        user_name: order.user?.user_name || "",
-        user_email: order.user?.user_email || "",
-        products: order.order_item
-          .filter((item) => item && item.product_item)
-          .map((item) => {
-            const productImages =
-              item.product_item?.product_image?.filter((img) => img) || [];
-            return {
-              product_id: item.product_item?.id || 0,
-              product_qty: item.qty,
-              product_price: item.price,
-              product_name: item.product_item?.product?.product_name || "",
-              product_image: productImages.map((img) => {
-                return {
-                  image_id: img.id,
-                  image_src: img.image_src,
-                };
-              }),
-            };
-          }),
-      };
-    });
-    setDataObj(newData);
-  }, [data]);
+      switch (columnKey) {
+        case "product_item.product.product_name":
+          return (
+            <div className="flex gap-2">
+              <PopImage imgs={data.product_item?.product_image} />
+              {data.product_item?.product?.product_name}
+            </div>
+          );
+        case "qty":
+          return <>{data.qty}</>;
+        case "price":
+          return <>{data.price}</>;
+        default:
+          return <></>;
+      }
+    },
+    []
+  );
 
   // console.log(dataObj);
   return (
     <Modal
       isOpen={modalDefaults.isOpen}
+      // isOpen={true}
       onClose={modalDefaults.onClose}
       hideCloseButton
       aria-label="detailModal"
@@ -103,44 +124,103 @@ const OrderDetailModal = ({ modalDefaults, dataId, status }: Props) => {
               Order Details
             </ModalHeader>
             <ModalBody aria-label="detailModalBody">
-              {dataObj.map((item) => {
-                if (String(item.order_id) === dataId) {
+              {data.map((item) => {
+                // const item: OrderDataTypeNon[0] = refineResults(items);
+                if (String(item.id) === dataId) {
                   return (
-                    <div className="text-xs flex flex-col gap-1">
-                      <p>Order ID: {item.order_id}</p>
-                      <p>Date Purchased: {item.order_date}</p>
-                      <p>Order Status: {item.order_status}</p>
-                      <div className="flex gap-2">
-                        <p>Order Status:</p>
-                        <StatusSelect
-                          status={status}
-                          item={item}
-                          setDataObj={setDataObj}
-                        />
+                    <div className="flex flex-col text-xs w-full" key={item.id}>
+                      <p className="whitespace-nowrap w-full [&>span]:w-[40%] [&>span]:inline-flex py-[1px]">
+                        <span>Order ID:</span> {item.id}
+                      </p>
+                      <p className="whitespace-nowrap w-full [&>span]:w-[40%] [&>span]:inline-flex py-[1px]">
+                        <span>Date Purchased:</span> {item.order_date}
+                      </p>
+                      <div className="whitespace-nowrap w-full [&>span]:w-[40%] [&>span]:inline-flex py-[1px]">
+                        <span>Order Status:</span>{" "}
+                        <StatusSelect status={status} item={item} />
                       </div>
                       <Divider className="my-2" />
-                      <p className="py-1">Customer Details: </p>
-                      <p>Customer Name: {item.user_name}</p>
-                      <p>Customer Email: {item.user_email}</p>
-                      <p>Customer ID: {item.user_id}</p>
+                      <span className="pb-1 font-bold">Customer Details:</span>
+                      <p className="whitespace-nowrap w-full [&>span]:w-[40%] [&>span]:inline-flex py-[1px]">
+                        <span>Customer Name:</span> {item.user?.user_name}
+                      </p>
+                      <p className="whitespace-nowrap w-full [&>span]:w-[40%] [&>span]:inline-flex py-[1px]">
+                        <span>Customer Email:</span> {item.user?.user_email}
+                      </p>
+                      <p className="whitespace-nowrap w-full [&>span]:w-[40%] [&>span]:inline-flex py-[1px]">
+                        <span>Customer ID:</span> {item.user?.id}
+                      </p>
                       <Divider className="my-2" />
-                      <p className="py-1">Products:</p>
-                      {item.products.length > 0
-                        ? item.products.map((order) => {
-                            return (
-                              <div
-                                className="flex justify-between"
-                                key={order.product_id}
-                              >
-                                <div className="flex gap-2">
-                                  <PopImage imgs={order.product_image} />
-                                  <p>{order.product_name}</p>
+                      <span className="pb-1 font-bold">Products:</span>
+                      {/* {item.order_item.length > 0
+                          ? item.order_item.map((order) => {
+                              return (
+                                <div
+                                  className="flex justify-between"
+                                  key={order.product_item?.id}
+                                >
+                                  <div className="flex gap-2">
+                                    <PopImage
+                                      imgs={order.product_item?.product_image}
+                                    />
+                                    <p>
+                                      {
+                                        order.product_item?.product
+                                          ?.product_name
+                                      }
+                                    </p>
+                                  </div>
+                                  <p>RM {order.price}</p>
                                 </div>
-                                <p>RM {order.product_price}</p>
-                              </div>
-                            );
-                          })
-                        : "Empty"}
+                              );
+                            })
+                          : "Empty"} */}
+                      <Table
+                        aria-label="Modal Data"
+                        radius="sm"
+                        removeWrapper
+                        isCompact
+                        classNames={{
+                          th: "h-min py-1",
+                          td: "text-xs",
+                        }}
+                      >
+                        <TableHeader columns={columns}>
+                          {(column) => (
+                            <TableColumn
+                              key={column.key}
+                              className={`${
+                                column.key === "qty" ? "text-center" : ""
+                              } ${column.key === "price" ? "text-center" : ""}`}
+                            >
+                              {column.label}
+                            </TableColumn>
+                          )}
+                        </TableHeader>
+                        <TableBody
+                          items={item.order_item}
+                          emptyContent={"No data to display."}
+                        >
+                          {(item) => (
+                            <TableRow
+                              key={`${item.id}`}
+                              aria-label={`${item.id}`}
+                            >
+                              {(columnKey) => (
+                                <TableCell
+                                  className={`${
+                                    columnKey === "qty" ? "text-center" : ""
+                                  } ${
+                                    columnKey === "price" ? "text-center" : ""
+                                  }`}
+                                >
+                                  {renderCell(item, columnKey)}
+                                </TableCell>
+                              )}
+                            </TableRow>
+                          )}
+                        </TableBody>
+                      </Table>
                       <Divider className="my-2" />
                       <div className="flex justify-between font-bold">
                         <p className="text-right font-bold">Total Price:</p>
@@ -182,45 +262,30 @@ export default OrderDetailModal;
 const StatusSelect = ({
   status,
   item,
-  setDataObj,
 }: {
   status: {
     id: number;
     status: string | null;
   }[];
-  item: OrderDetailModalFlat[0];
-  setDataObj: React.Dispatch<React.SetStateAction<OrderDetailModalFlat>>;
+  item: OrderDataType[0];
 }) => {
-  // Array.from(e as Set<React.Key>)[0] as number
-  // status.find((s) => s.id === Array.from(e as Set<React.Key>)[0] as string)
   return (
     <Select
       size="sm"
       classNames={{
+        base: "w-min",
         innerWrapper: "w-min pl-[8px] pr-[24px] h-min [&>span]:text-xs",
         trigger: "w-min min-h-min h-min ",
       }}
       items={status}
       defaultSelectedKeys={[
-        `${status.find((s) => s.status === item.order_status)?.id}`,
+        `${status.find((s) => s.status === item.order_status?.status)?.id}`,
       ]}
       aria-label="statusSelect"
       onSelectionChange={(e) =>
-        setDataObj((prev) => {
-          return prev.map((itm) => {
-            const check = status.find(
-              (s) => s.id === (Array.from(e as Set<React.Key>)[0] as number)
-            );
-            console.log(Array.from(e as Set<React.Key>)[0] as number);
-            return {
-              ...itm,
-              order_status: status.find(
-                (s) => s.id === (Array.from(e as Set<React.Key>)[0] as number)
-              )?.status as string,
-            };
-          });
-        })
+        updateOrderDetail(item.id, "order_status", Number(nextuiOnSelect(e)))
       }
+      disallowEmptySelection
     >
       {(item) => (
         <SelectItem key={item.id} aria-label={`${item.id}`}>
@@ -234,12 +299,17 @@ const StatusSelect = ({
 const PopImage = ({
   imgs,
 }: {
-  imgs: {
-    image_id: number;
-    image_src: string | null;
-  }[];
+  imgs:
+    | {
+        id: number;
+        product_item_id: number | null;
+        image_src: string | null;
+        image_name: string | null;
+      }[]
+    | undefined;
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  if (imgs === undefined) return;
   return (
     <Popover radius="sm" showArrow isOpen={isOpen} aria-label="popOver">
       <PopoverTrigger
@@ -267,7 +337,7 @@ const PopImage = ({
                 radius="sm"
                 width={150}
                 src={item.image_src as string}
-                aria-label={`${item.image_id}`}
+                aria-label={`${item.id}`}
               />
             </>
           ))}

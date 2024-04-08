@@ -51,7 +51,7 @@ const columns = [
 ];
 
 type Props = {
-  data: OrderDataType;
+  dataDB: OrderDataType;
   status: {
     id: number;
     status: string | null;
@@ -60,15 +60,25 @@ type Props = {
 
 type Selection = "all" | Set<any>;
 
-const OrderTableContent = ({ data, status }: Props) => {
+const OrderTableContent = ({ dataDB, status }: Props) => {
+  const data = useOrderData((state) => state.data);
   const setData = useOrderData((state) => state.setData);
   // console.log(data);
 
   React.useEffect(() => {
-    if (data) {
-      setData(data);
+    if (dataDB) {
+      // console.log("Pass");
+      setData(dataDB);
     }
-  }, [data]);
+  }, [dataDB]);
+
+  const [mount, setMount] = useState(false);
+
+  React.useEffect(() => {
+    if (!mount) {
+      setMount(true);
+    }
+  }, [mount]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [dataId, setDataId] = useState("");
@@ -165,6 +175,11 @@ const OrderTableContent = ({ data, status }: Props) => {
     []
   );
 
+  if (!mount)
+    return (
+      <div className="flex w-full justify-center items-center">Loading</div>
+    );
+
   return (
     <div>
       <Table
@@ -186,7 +201,7 @@ const OrderTableContent = ({ data, status }: Props) => {
         </TableHeader>
         <TableBody emptyContent={"No Orders."} items={data}>
           {(item) => (
-            <TableRow key={item.id} aria-label={String(item.id)}>
+            <TableRow key={`${item.id}`} aria-label={String(item.id)}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}

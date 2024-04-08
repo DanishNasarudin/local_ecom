@@ -9,13 +9,17 @@ import {
   text,
   varchar,
 } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const user = pgTable("user", {
-  id: serial("id").primaryKey(),
+  id: integer("id").primaryKey(),
   role_id: integer("role_id").references(() => role.id),
   user_name: varchar("user_name", { length: 200 }),
   user_email: varchar("user_email", { length: 200 }),
 });
+
+export const user_schemaInsert = createInsertSchema(user);
+export const user_schemaSelect = createSelectSchema(user);
 
 export const user_relations = relations(user, ({ one, many }) => ({
   role: one(role, {
@@ -29,6 +33,9 @@ export const role = pgTable("role", {
   role_name: varchar("role_name", { length: 200 }),
 });
 
+export const role_schemaInsert = createInsertSchema(role);
+export const role_schemaSelect = createSelectSchema(role);
+
 export const role_relations = relations(role, ({ many }) => ({
   user: many(user),
 }));
@@ -38,6 +45,9 @@ export const brand = pgTable("brand", {
   brand_name: varchar("brand_name", { length: 200 }),
   brand_description: text("brand_description"),
 });
+
+export const brand_schemaInsert = createInsertSchema(brand);
+export const brand_schemaSelect = createSelectSchema(brand);
 
 export const brand_relations = relations(brand, ({ one, many }) => ({
   user_brand: many(user_brand),
@@ -82,6 +92,11 @@ export const product_category = pgTable(
   }
 );
 
+export const product_category_schemaInsert =
+  createInsertSchema(product_category);
+export const product_category_schemaSelect =
+  createSelectSchema(product_category);
+
 export const product_category_relations = relations(
   product_category,
   ({ one, many }) => ({
@@ -101,6 +116,9 @@ export const product = pgTable("product", {
   product_description: text("product_description"),
 });
 
+export const product_schemaInsert = createInsertSchema(product);
+export const product_schemaSelect = createSelectSchema(product);
+
 export const product_relations = relations(product, ({ one, many }) => ({
   product_item: many(product_item),
   brand: one(brand, {
@@ -118,6 +136,9 @@ export const variation = pgTable("variation", {
   name: varchar("name"),
 });
 
+export const variation_schemaInsert = createInsertSchema(variation);
+export const variation_schemaSelect = createSelectSchema(variation);
+
 export const variation_relations = relations(variation, ({ many }) => ({
   variation_option: many(variation_option),
 }));
@@ -127,6 +148,11 @@ export const variation_option = pgTable("variation_option", {
   variation_id: integer("variation_id").references(() => variation.id),
   name: varchar("name", { length: 200 }),
 });
+
+export const variation_option_schemaInsert =
+  createInsertSchema(variation_option);
+export const variation_option_schemaSelect =
+  createSelectSchema(variation_option);
 
 export const variation_option_relations = relations(
   variation_option,
@@ -141,6 +167,7 @@ export const variation_option_relations = relations(
 );
 
 export const product_variation = pgTable("product_variation", {
+  id: serial("id").primaryKey(),
   product_item_id: integer("product_item_id").references(() => product_item.id),
   variation_option_id: integer("variation_option_id").references(
     () => variation_option.id
@@ -163,13 +190,18 @@ export const product_variation_relations = relations(
 
 export const product_item = pgTable("product_item", {
   id: serial("id").primaryKey(),
-  product_id: integer("product_id").references(() => product.id),
+  product_id: integer("product_id")
+    .references(() => product.id)
+    .notNull(),
   SKU: varchar("SKU", { length: 200 }),
   qty_in_stock: integer("qty_in_stock"),
   original_price: integer("original_price"),
   sale_price: integer("sale_price"),
   is_available: boolean("is_available"),
 });
+
+export const product_item_schemaInsert = createInsertSchema(product_item);
+export const product_item_schemaSelect = createSelectSchema(product_item);
 
 export const product_item_relations = relations(
   product_item,
@@ -193,6 +225,9 @@ export const product_image = pgTable("product_image", {
   image_name: varchar("image_name", { length: 200 }),
 });
 
+export const product_image_schemaInsert = createInsertSchema(product_image);
+export const product_image_schemaSelect = createSelectSchema(product_image);
+
 export const product_image_relations = relations(product_image, ({ one }) => ({
   product_item: one(product_item, {
     fields: [product_image.product_item_id],
@@ -207,6 +242,9 @@ export const order_detail = pgTable("order_detail", {
   order_total: integer("order_total"),
   order_status: integer("order_status").references(() => order_status.id),
 });
+
+export const order_detail_schemaInsert = createInsertSchema(order_detail);
+export const order_detail_schemaSelect = createSelectSchema(order_detail);
 
 export const order_detail_relations = relations(
   order_detail,
@@ -228,6 +266,9 @@ export const order_status = pgTable("order_status", {
   status: varchar("status", { length: 100 }),
 });
 
+export const order_status_schemaInsert = createInsertSchema(order_status);
+export const order_status_schemaSelect = createSelectSchema(order_status);
+
 export const order_status_relations = relations(order_status, ({ many }) => ({
   order_detail: many(order_detail),
 }));
@@ -242,6 +283,9 @@ export const order_item = pgTable("order_item", {
     () => variation_option.id
   ),
 });
+
+export const order_item_schemaInsert = createInsertSchema(order_item);
+export const order_item_schemaSelect = createSelectSchema(order_item);
 
 export const order_item_relations = relations(order_item, ({ one, many }) => ({
   order_detail: one(order_detail, {
@@ -269,6 +313,9 @@ export const cart = pgTable("cart", {
   user_id: integer("user_id").references(() => user.id),
 });
 
+export const cart_schemaInsert = createInsertSchema(cart);
+export const cart_schemaSelect = createSelectSchema(cart);
+
 export const cart_relations = relations(cart, ({ one, many }) => ({
   user: one(user, {
     fields: [cart.user_id],
@@ -283,6 +330,9 @@ export const cart_item = pgTable("cart_item", {
   product_item_id: integer("product_item_id").references(() => product_item.id),
   qty: integer("qty"),
 });
+
+export const cart_item_schemaInsert = createInsertSchema(cart_item);
+export const cart_item_schemaSelect = createSelectSchema(cart_item);
 
 export const cart_item_relations = relations(cart_item, ({ one }) => ({
   cart: one(cart, {
@@ -303,6 +353,9 @@ export const user_review = pgTable("user_review", {
   comment: text("comment"),
 });
 
+export const user_review_schemaInsert = createInsertSchema(user_review);
+export const user_review_schemaSelect = createSelectSchema(user_review);
+
 export const user_review_relations = relations(user_review, ({ one }) => ({
   user: one(user, {
     fields: [user_review.user_id],
@@ -319,6 +372,9 @@ export const user_favourite = pgTable("user_favourite", {
   product_item_id: integer("product_item_id").references(() => product_item.id),
   user_id: integer("user_id").references(() => user.id),
 });
+
+export const user_favourite_schemaInsert = createInsertSchema(user_favourite);
+export const user_favourite_schemaSelect = createSelectSchema(user_favourite);
 
 export const user_favourite_relations = relations(
   user_favourite,

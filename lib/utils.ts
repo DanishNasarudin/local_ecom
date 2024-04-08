@@ -57,3 +57,7 @@ export const containsSearchTerm = (value: any, searchTerm: string): boolean => {
   }
   return false;
 };
+
+export function nextuiOnSelect(e: any) {
+  return Array.from(e as Set<React.Key>)[0];
+}

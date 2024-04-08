@@ -23,7 +23,7 @@ const links = [
     icon: <OrdersIcon size={18} />,
   },
   {
-    link: "/studio",
+    link: "/studio/products",
     name: "Products",
     icon: <CartIcon size={18} />,
   },
