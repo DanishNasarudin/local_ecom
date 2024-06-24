@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 import {
   boolean,
   date,
@@ -18,6 +18,7 @@ export const user = pgTable("user", {
   user_email: varchar("user_email", { length: 200 }),
 });
 
+export type UserType = InferSelectModel<typeof user>;
 export const user_schemaInsert = createInsertSchema(user);
 export const user_schemaSelect = createSelectSchema(user);
 
@@ -33,6 +34,7 @@ export const role = pgTable("role", {
   role_name: varchar("role_name", { length: 200 }),
 });
 
+export type RoleType = InferSelectModel<typeof role>;
 export const role_schemaInsert = createInsertSchema(role);
 export const role_schemaSelect = createSelectSchema(role);
 
@@ -46,6 +48,7 @@ export const brand = pgTable("brand", {
   brand_description: text("brand_description"),
 });
 
+export type BrandType = InferSelectModel<typeof brand>;
 export const brand_schemaInsert = createInsertSchema(brand);
 export const brand_schemaSelect = createSelectSchema(brand);
 
@@ -92,6 +95,7 @@ export const product_category = pgTable(
   }
 );
 
+export type ProductCategoryType = InferSelectModel<typeof product_category>;
 export const product_category_schemaInsert =
   createInsertSchema(product_category);
 export const product_category_schemaSelect =
@@ -116,6 +120,7 @@ export const product = pgTable("product", {
   product_description: text("product_description"),
 });
 
+export type ProductType = InferSelectModel<typeof product>;
 export const product_schemaInsert = createInsertSchema(product);
 export const product_schemaSelect = createSelectSchema(product);
 
@@ -136,6 +141,7 @@ export const variation = pgTable("variation", {
   name: varchar("name"),
 });
 
+export type VariationType = InferSelectModel<typeof variation>;
 export const variation_schemaInsert = createInsertSchema(variation);
 export const variation_schemaSelect = createSelectSchema(variation);
 
@@ -149,6 +155,7 @@ export const variation_option = pgTable("variation_option", {
   name: varchar("name", { length: 200 }),
 });
 
+export type VariationOptionType = InferSelectModel<typeof variation_option>;
 export const variation_option_schemaInsert =
   createInsertSchema(variation_option);
 export const variation_option_schemaSelect =
@@ -200,6 +207,7 @@ export const product_item = pgTable("product_item", {
   is_available: boolean("is_available"),
 });
 
+export type ProductItemType = InferSelectModel<typeof product_item>;
 export const product_item_schemaInsert = createInsertSchema(product_item);
 export const product_item_schemaSelect = createSelectSchema(product_item);
 
@@ -225,6 +233,7 @@ export const product_image = pgTable("product_image", {
   image_name: varchar("image_name", { length: 200 }),
 });
 
+export type ProductImageType = InferSelectModel<typeof product_image>;
 export const product_image_schemaInsert = createInsertSchema(product_image);
 export const product_image_schemaSelect = createSelectSchema(product_image);
 
@@ -243,6 +252,7 @@ export const order_detail = pgTable("order_detail", {
   order_status: integer("order_status").references(() => order_status.id),
 });
 
+export type OrderDetailType = InferSelectModel<typeof order_detail>;
 export const order_detail_schemaInsert = createInsertSchema(order_detail);
 export const order_detail_schemaSelect = createSelectSchema(order_detail);
 
@@ -266,6 +276,7 @@ export const order_status = pgTable("order_status", {
   status: varchar("status", { length: 100 }),
 });
 
+export type OrderStatusType = InferSelectModel<typeof order_status>;
 export const order_status_schemaInsert = createInsertSchema(order_status);
 export const order_status_schemaSelect = createSelectSchema(order_status);
 
@@ -284,6 +295,7 @@ export const order_item = pgTable("order_item", {
   ),
 });
 
+export type OrderItemType = InferSelectModel<typeof order_item>;
 export const order_item_schemaInsert = createInsertSchema(order_item);
 export const order_item_schemaSelect = createSelectSchema(order_item);
 
@@ -313,6 +325,7 @@ export const cart = pgTable("cart", {
   user_id: integer("user_id").references(() => user.id),
 });
 
+export type CartType = InferSelectModel<typeof cart>;
 export const cart_schemaInsert = createInsertSchema(cart);
 export const cart_schemaSelect = createSelectSchema(cart);
 
@@ -331,6 +344,7 @@ export const cart_item = pgTable("cart_item", {
   qty: integer("qty"),
 });
 
+export type CartItemType = InferSelectModel<typeof cart_item>;
 export const cart_item_schemaInsert = createInsertSchema(cart_item);
 export const cart_item_schemaSelect = createSelectSchema(cart_item);
 
@@ -353,6 +367,7 @@ export const user_review = pgTable("user_review", {
   comment: text("comment"),
 });
 
+export type UserReviewType = InferSelectModel<typeof user_review>;
 export const user_review_schemaInsert = createInsertSchema(user_review);
 export const user_review_schemaSelect = createSelectSchema(user_review);
 
@@ -373,6 +388,7 @@ export const user_favourite = pgTable("user_favourite", {
   user_id: integer("user_id").references(() => user.id),
 });
 
+export type UserFavourite = InferSelectModel<typeof user_favourite>;
 export const user_favourite_schemaInsert = createInsertSchema(user_favourite);
 export const user_favourite_schemaSelect = createSelectSchema(user_favourite);
 

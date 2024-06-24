@@ -1,10 +1,12 @@
 "use server";
+import { order_detail } from "./../../db/schema";
 
 import db from "@/db/db";
-import { order_detail, order_detail_schemaInsert } from "@/db/schema";
+import { order_detail_schemaInsert } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidateTag, unstable_cache } from "next/cache";
 import { z } from "zod";
+import { InferQueryModel } from "./drizzleHelperFunction";
 
 type OrderDetailTableType = z.infer<typeof order_detail_schemaInsert>;
 
@@ -58,3 +60,19 @@ export const getOrderDetail = unstable_cache(
   ["order_detail"],
   { tags: ["order_detail"], revalidate: 60 }
 );
+
+export type OrderDataType = InferQueryModel<
+  "order_detail",
+  { user_id: false; order_status: false },
+  {
+    order_item: {
+      columns: { product_item_id: false };
+      with: {
+        product_item: { with: { product: true; product_image: true } };
+        variation_option: true;
+      };
+    };
+    user: true;
+    order_status: true;
+  }
+>[];

@@ -4,10 +4,11 @@ import { drizzle } from "drizzle-orm/neon-serverless";
 import * as schema from "./schema";
 
 if (process.env.NODE_ENV === "production") {
-  console.log("Running Production Mode.");
-  config({ path: ".prod.env" });
+  console.log("db: Running Production Mode.");
+  // config({ path: ".prod.env" });
+  config({ path: ".dev.env" });
 } else {
-  console.log("Running Development Mode.");
+  console.log("db: Running Development Mode.");
   config({ path: ".dev.env" });
 }
 

@@ -19,7 +19,8 @@ import {
 } from "@nextui-org/react";
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { OrderDataType } from "../page";
+// import { OrderDataType } from "../page";
+import { OrderDataType } from "@/app/(serverActions)/orderDetails";
 import OrderDetailModal from "./OrderDetailModal";
 
 const columns = [
@@ -61,8 +62,7 @@ type Props = {
 type Selection = "all" | Set<any>;
 
 const OrderTableContent = ({ dataDB, status }: Props) => {
-  const data = useOrderData((state) => state.data);
-  const setData = useOrderData((state) => state.setData);
+  const { data, setData } = useOrderData();
   // console.log(data);
 
   React.useEffect(() => {

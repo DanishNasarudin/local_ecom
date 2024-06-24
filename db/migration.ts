@@ -4,10 +4,11 @@ import { migrate } from "drizzle-orm/postgres-js/migrator";
 import postgres from "postgres";
 
 if (process.env.NODE_ENV === "production") {
-  console.log("Running Production Mode.");
-  config({ path: ".prod.env" });
+  console.log("migration: Running Production Mode.");
+  // config({ path: ".prod.env" });
+  config({ path: ".dev.env" });
 } else {
-  console.log("Running Development Mode.");
+  console.log("migration: Running Development Mode.");
   config({ path: ".dev.env" });
 }
 

@@ -1,5 +1,5 @@
 "use client";
-import { ProductsDetail } from "@/app/(serverActions)/productsActions";
+import { ProductAdminType } from "@/app/(serverActions)/productsActions";
 import { Selection } from "@/lib/types";
 import {
   Table,
@@ -12,7 +12,7 @@ import {
 import React from "react";
 
 type Props = {
-  data: ProductsDetail;
+  data: ProductAdminType;
 };
 
 const columns = [
@@ -52,9 +52,11 @@ const ProductsTableContent = ({ data }: Props) => {
     new Set([])
   );
 
+  // console.log(data[0].product_variation[0].variation_option_id)
+
   const renderCell = React.useCallback(
-    async (data: ProductsDetail[0], columnKey: React.Key) => {
-      const cellValue = data[columnKey as keyof ProductsDetail[0]];
+    async (data: ProductAdminType[0], columnKey: React.Key) => {
+      const cellValue = data[columnKey as keyof ProductAdminType[0]];
       // console.log(
       //   await db
       //     .select()
@@ -65,24 +67,24 @@ const ProductsTableContent = ({ data }: Props) => {
         // case "id":
         //   return <>{data.id}</>;
         case "category_id":
-          return <>{data.product.category_id}</>;
+        // return <>{data.product.category_id}</>;
         case "product_name":
           return (
             <>
-              {data.product.product_name}
+              {/* {data.product.product_name}
               {"-"}
               {data.product_variation[0] &&
-                data.product_variation[0].variation_option_id}
+                data.product_variation[0].variation_option_id} */}
             </>
           );
         case "qty_in_stock":
-          return <>{data.qty_in_stock}</>;
+        // return <>{data.qty_in_stock}</>;
         case "original_price":
-          return <>{data.original_price}</>;
+        // return <>{data.original_price}</>;
         case "sale_price":
-          return <>{data.sale_price}</>;
+        // return <>{data.sale_price}</>;
         case "is_available":
-          return <>{`${data.is_available}`}</>;
+        // return <>{`${data.is_available}`}</>;
         default:
           return <div>{cellValue ? cellValue.toString() : ""}</div>;
       }

@@ -1,4 +1,4 @@
-import { OrderDataType } from "@/app/studio/orders/page";
+import { OrderDataType } from "@/app/(serverActions)/orderDetails";
 import { create } from "zustand";
 
 type OrderDataStore = {

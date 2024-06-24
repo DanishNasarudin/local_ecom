@@ -1,14 +1,16 @@
-import { getOrderDetail } from "@/app/(serverActions)/orderDetails";
+import {
+  getOrderDetail,
+  OrderDataType,
+} from "@/app/(serverActions)/orderDetails";
 import db from "@/db/db";
 import { containsSearchTerm } from "@/lib/utils";
 import OrderTableContent from "./(orders-components)/OrderTableContent";
 import OrderTableHead from "./(orders-components)/OrderTableHead";
 
+// Defining types ---------------------------------------------------------
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
-const dataForType = await getOrderDetail();
-export type OrderDataType = typeof dataForType;
 
 const status = await db.query.order_status.findMany({});
 
@@ -17,6 +19,7 @@ export type OrderStatusType = typeof status;
 const Orders = async ({ searchParams }: Props) => {
   const data = await getOrderDetail();
 
+  // To filter for search params ------------------------------------------
   let filteredData: OrderDataType = [...data];
 
   const searchTerm = Array.isArray(searchParams.search)

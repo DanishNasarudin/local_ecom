@@ -40,7 +40,7 @@ const links = [
 ];
 
 const StudioNavbar = () => {
-  const [sidebar, setSidebar] = useState(false);
+  const [sidebar, setSidebar] = useState(true);
 
   return (
     <nav

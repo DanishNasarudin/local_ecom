@@ -1,4 +1,7 @@
-import { updateOrderDetail } from "@/app/(serverActions)/orderDetails";
+import {
+  OrderDataType,
+  updateOrderDetail,
+} from "@/app/(serverActions)/orderDetails";
 import { useOrderData } from "@/lib/store";
 import { nextuiOnSelect } from "@/lib/utils";
 import {
@@ -23,7 +26,6 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import React from "react";
-import { OrderDataType } from "../page";
 
 type Props = {
   modalDefaults: {
