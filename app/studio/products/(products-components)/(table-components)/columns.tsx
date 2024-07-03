@@ -10,6 +10,7 @@ import { ColumnDef } from "@tanstack/react-table";
 export const columns: ColumnDef<ProductAdminType[0]>[] = [
   {
     id: "expand",
+    size: 0,
     header: "",
     cell: ({ row }) => {
       const isExpand = row.getIsExpanded();
@@ -26,29 +27,39 @@ export const columns: ColumnDef<ProductAdminType[0]>[] = [
   },
   {
     id: "select",
+    size: 50,
     header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
+      <div className="text-center">
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className="mx-auto"
+        />
+      </div>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+      <div className="text-center">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: "category_id",
-    header: "Category ID",
+    header: "Category Name",
+    cell: ({ row }) => {
+      const data = row.original["product_category"];
+      return <div>{data?.category_name}</div>;
+    },
   },
   {
     accessorKey: "product_name",

@@ -1,8 +1,9 @@
 "use server";
 
 import db from "@/db/db";
-import { product_item_schemaInsert } from "@/db/schema";
-import { unstable_cache } from "next/cache";
+import { product_item, product_item_schemaInsert } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { revalidateTag, unstable_cache } from "next/cache";
 import { z } from "zod";
 import { InferQueryModel } from "./drizzleHelperFunction";
 
@@ -60,6 +61,45 @@ type ProductsDetailType = z.infer<typeof product_item_schemaInsert>;
 //     product_image: { columns: { product_item_id: false } };
 //   }
 // >[];
+// export const updateProductsDetail = async <
+//   K extends keyof ProductsDetailType,
+//   V extends ProductsDetailType[K]
+// >(
+//   id: number,
+//   field: K,
+//   value: V,
+//   table: string
+// ) => {
+//   try {
+//     await db
+//       .update(product)
+//       .set({ [field]: value })
+//       .where(eq(product.id, id));
+
+//     revalidateTag("product_admin");
+//   } catch (e) {
+//     throw new Error(`${e}`);
+//   }
+// };
+
+export const updateProductActive = async ({
+  id,
+  value,
+}: {
+  id: number;
+  value: boolean;
+}) => {
+  try {
+    await db
+      .update(product_item)
+      .set({ is_available: value })
+      .where(eq(product_item.id, id));
+
+    revalidateTag("product_admin");
+  } catch (e) {
+    throw new Error(`${e}`);
+  }
+};
 
 export const getProductAdmin = unstable_cache(
   async () => {
@@ -90,6 +130,11 @@ export const getProductAdmin = unstable_cache(
             },
           },
         },
+        product_category: {
+          columns: {
+            id: false,
+          },
+        },
       },
     });
   },
@@ -110,6 +155,9 @@ export type ProductAdminType = InferQueryModel<
         };
         product_image: { columns: { product_item_id: false } };
       };
+    };
+    product_category: {
+      columns: { id: false };
     };
   }
 >[];
