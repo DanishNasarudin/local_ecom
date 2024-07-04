@@ -25,6 +25,8 @@ const TableExpand = React.forwardRef(<TData,>({ rowData }: Props<TData>) => {
     ));
 });
 
+// Need to have set variable for the out of stock indicator -------------------------------
+
 const ExpandRow = ({
   data,
 }: {
@@ -34,11 +36,16 @@ const ExpandRow = ({
     <TableRow>
       <TableCell></TableCell>
       <TableCell></TableCell>
-      <TableCell></TableCell>
       <TableCell>{data.product_variation[0].variation_option?.name}</TableCell>
-      <TableCell>{data.qty_in_stock}</TableCell>
+      <TableCell></TableCell>
       <TableCell>{data.original_price}</TableCell>
       <TableCell>{data.sale_price}</TableCell>
+      <TableCell>
+        {data.qty_in_stock}{" "}
+        {data.qty_in_stock !== null && data.qty_in_stock < 5 && (
+          <span className="text-red-600 font-bold">Out of Stock</span>
+        )}
+      </TableCell>
       <TableCell>
         <Switch
           defaultChecked={

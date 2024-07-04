@@ -54,6 +54,10 @@ export const columns: ColumnDef<ProductAdminType[0]>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "product_name",
+    header: "Product Name",
+  },
+  {
     accessorKey: "category_id",
     header: "Category Name",
     cell: ({ row }) => {
@@ -62,8 +66,12 @@ export const columns: ColumnDef<ProductAdminType[0]>[] = [
     },
   },
   {
-    accessorKey: "product_name",
-    header: "Product Name",
+    accessorKey: "original_price",
+    header: "Ori Price",
+  },
+  {
+    accessorKey: "sale_price",
+    header: "Sale Price",
   },
   {
     accessorKey: "qty_in_stock",
@@ -72,48 +80,26 @@ export const columns: ColumnDef<ProductAdminType[0]>[] = [
     cell: ({ row, getValue }) => {
       //   console.log(getValue());
       const data = row.original["product_item"];
-      const checkVariants = data.length > 1;
       const totalStock = data.reduce((acc, val) => acc + val.qty_in_stock!, 0);
-      return totalStock;
-    },
-  },
-  {
-    accessorKey: "original_price",
-    header: "Ori Price",
-    cell: ({ row }) => {
-      //   const data = row.original["product_item"];
-      //   const checkVariants = data.length > 1;
-      //   if (checkVariants) {
-      //     return;
-      //   } else {
-      //     return data[0].original_price;
-      //   }
-    },
-  },
-  {
-    accessorKey: "sale_price",
-    header: "Sale Price",
-    cell: ({ row }) => {
-      //   const data = row.original["product_item"];
-      //   const checkVariants = data.length > 1;
-      //   if (checkVariants) {
-      //     return;
-      //   } else {
-      //     return data[0].sale_price;
-      //   }
+
+      // Need to have set variable for the out of stock indicator -------------------------------
+      const totalNoStock = data.filter((item) =>
+        item.qty_in_stock !== null ? item.qty_in_stock < 5 : null
+      ).length;
+      return (
+        <div>
+          {totalStock}{" "}
+          {totalNoStock > 0 && (
+            <span className="text-red-600 font-bold">
+              Out of Stock {`(${totalNoStock})`}
+            </span>
+          )}
+        </div>
+      );
     },
   },
   {
     accessorKey: "is_available",
     header: "Active",
-    cell: ({ row }) => {
-      //   const data = row.original["product_item"];
-      //   const checkVariants = data.length > 1;
-      //   if (checkVariants) {
-      //     return;
-      //   } else {
-      //     return <>{`${data[0].is_available}`}</>;
-      //   }
-    },
   },
 ];
