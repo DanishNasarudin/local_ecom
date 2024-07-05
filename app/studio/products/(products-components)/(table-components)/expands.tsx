@@ -8,22 +8,28 @@ import { Switch } from "@/components/ui/switch";
 import { TableCell, TableRow } from "@/components/ui/table";
 import React from "react";
 
-type Props<TData> = {
+type Props<TData extends ProductAdminType[0]> = {
   rowData: TData;
 };
 
-const TableExpand = React.forwardRef(<TData,>({ rowData }: Props<TData>) => {
-  const convData = rowData as ProductAdminType[0];
-  const itemData = convData.product_item;
+const TableExpand = React.forwardRef<HTMLTableRowElement, Props<any>>(
+  (props, ref) => {
+    const convData = props.rowData as ProductAdminType[0]; // Type assertion here if needed
+    const itemData = convData.product_item;
 
-  return itemData
-    .sort((a, b) => a.id - b.id)
-    .map((item, index) => (
-      <React.Fragment key={index}>
-        <ExpandRow data={item} />
-      </React.Fragment>
-    ));
-});
+    return (
+      <>
+        {itemData
+          .sort((a, b) => a.id - b.id)
+          .map((item, index) => (
+            <React.Fragment key={index}>
+              <ExpandRow data={item} />
+            </React.Fragment>
+          ))}
+      </>
+    );
+  }
+);
 
 // Need to have set variable for the out of stock indicator -------------------------------
 

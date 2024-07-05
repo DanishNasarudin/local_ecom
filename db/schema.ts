@@ -115,7 +115,9 @@ export const product_category_relations = relations(
 export const product = pgTable("product", {
   id: serial("id").primaryKey(),
   brand_id: integer("brand_id").references(() => brand.id),
-  category_id: integer("category_id").references(() => product_category.id),
+  category_id: integer("category_id").references(() => product_category.id, {
+    onDelete: "cascade",
+  }),
   product_name: varchar("product_name", { length: 200 }),
   product_description: text("product_description"),
 });
@@ -198,7 +200,7 @@ export const product_variation_relations = relations(
 export const product_item = pgTable("product_item", {
   id: serial("id").primaryKey(),
   product_id: integer("product_id")
-    .references(() => product.id)
+    .references(() => product.id, { onDelete: "cascade" })
     .notNull(),
   SKU: varchar("SKU", { length: 200 }),
   qty_in_stock: integer("qty_in_stock"),
@@ -228,7 +230,10 @@ export const product_item_relations = relations(
 
 export const product_image = pgTable("product_image", {
   id: serial("id").primaryKey(),
-  product_item_id: integer("product_item_id").references(() => product_item.id),
+  product_item_id: integer("product_item_id").references(
+    () => product_item.id,
+    { onDelete: "cascade" }
+  ),
   image_src: varchar("image_src", { length: 256 }),
   image_name: varchar("image_name", { length: 200 }),
 });

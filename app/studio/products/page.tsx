@@ -1,5 +1,7 @@
 import {
   getProductAdmin,
+  getProductCategoryList,
+  ProductAdminCategoryListType,
   ProductAdminType,
 } from "@/app/(serverActions)/productsActions";
 import { containsSearchTerm } from "@/lib/utils";
@@ -12,6 +14,8 @@ type Props = {
 
 const Products = async ({ searchParams }: Props) => {
   const data: ProductAdminType = await getProductAdmin();
+  const categoryList: ProductAdminCategoryListType =
+    await getProductCategoryList();
 
   let filteredData: ProductAdminType = [...data];
 
@@ -31,7 +35,7 @@ const Products = async ({ searchParams }: Props) => {
     <div className="flex flex-col gap-8">
       <div>Products</div>
       <div className="bg-white border-[1px] border-grayLine p-4 rounded-lg flex flex-col gap-4">
-        <ProductsTableHead />
+        <ProductsTableHead categoryList={categoryList} />
         <ProductsTableContentShad data={filteredData} />
       </div>
     </div>
