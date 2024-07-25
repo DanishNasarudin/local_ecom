@@ -153,3 +153,31 @@ export type ProductAdminCategoryListType = InferQueryModel<
   undefined,
   {}
 >[];
+
+export const getProductVariationList = unstable_cache(
+  async () => {
+    return db.query.variation.findMany({});
+  },
+  ["product_admin_variation"],
+  { tags: ["product_admin_variation"], revalidate: 60 }
+);
+
+export type ProductAdminVariationListType = InferQueryModel<
+  "variation",
+  undefined,
+  {}
+>[];
+
+export const getProductVariationOptionList = unstable_cache(
+  async () => {
+    return db.query.variation_option.findMany({});
+  },
+  ["product_admin_variation_option"],
+  { tags: ["product_admin_variation_option"], revalidate: 60 }
+);
+
+export type ProductAdminVariationOptionListType = InferQueryModel<
+  "variation_option",
+  undefined,
+  {}
+>[];

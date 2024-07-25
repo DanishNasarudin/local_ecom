@@ -1,6 +1,10 @@
 "use client";
 import { SearchIcon } from "@/app/(components)/Icons";
-import { ProductAdminCategoryListType } from "@/app/(serverActions)/productsActions";
+import {
+  ProductAdminCategoryListType,
+  ProductAdminVariationListType,
+  ProductAdminVariationOptionListType,
+} from "@/app/(serverActions)/productsActions";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { createURL, debounceFunc } from "@/lib/utils";
 import { Button, CircularProgress, Input } from "@nextui-org/react";
@@ -10,9 +14,15 @@ import AddItemDialog from "./(dialog-components)/AddItemDialog";
 
 type Props = {
   categoryList: ProductAdminCategoryListType;
+  variationList: ProductAdminVariationListType;
+  variationOptionList: ProductAdminVariationOptionListType;
 };
 
-const ProductsTableHead = ({ categoryList }: Props) => {
+const ProductsTableHead = ({
+  categoryList,
+  variationList,
+  variationOptionList,
+}: Props) => {
   const filterDropdown = [
     {
       key: "name",
@@ -97,7 +107,11 @@ const ProductsTableHead = ({ categoryList }: Props) => {
           aria-describedby="add-product-dialog"
           aria-description="add-product-dialog"
         >
-          <AddItemDialog categoryList={categoryList} />
+          <AddItemDialog
+            categoryList={categoryList}
+            variationList={variationList}
+            variationOptionList={variationOptionList}
+          />
         </DialogContent>
       </Dialog>
     </div>

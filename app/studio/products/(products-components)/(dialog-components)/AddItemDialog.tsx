@@ -21,6 +21,8 @@ import {
   deleteProductCategoryList,
   insertProductCategoryList,
   ProductAdminCategoryListType,
+  ProductAdminVariationListType,
+  ProductAdminVariationOptionListType,
 } from "@/app/(serverActions)/productsActions";
 import { Button } from "@/components/ui/button";
 import {
@@ -47,6 +49,7 @@ import {
 } from "@/components/ui/popover";
 import { cn, containsSearchTerm, debounceFunc } from "@/lib/utils";
 import React from "react";
+import VariationTable from "./VariationTable";
 
 const languages = [
   { label: "English", value: "en" },
@@ -67,18 +70,32 @@ const formSchema = z.object({
   category_name: z.string().min(2, {
     message: "Category name must be at least 2 characters.",
   }),
+  variation: z
+    .string()
+    .min(2, { message: "Option must be at least 2 characters" }),
+  variation_option: z
+    .string()
+    .min(2, { message: "Variation must be at least 2 characters" }),
 });
 
 type Props = {
   categoryList: ProductAdminCategoryListType;
+  variationList: ProductAdminVariationListType;
+  variationOptionList: ProductAdminVariationOptionListType;
 };
 
-const AddItemDialog = ({ categoryList }: Props) => {
+const AddItemDialog = ({
+  categoryList,
+  variationList,
+  variationOptionList,
+}: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       product_name: "",
       category_name: "",
+      variation: "",
+      variation_option: "",
     },
   });
 
@@ -272,6 +289,141 @@ const AddItemDialog = ({ categoryList }: Props) => {
                 </FormItem>
               )}
             />
+          </div>
+          <div className="flex flex-col gap-4">
+            <DialogTitle>Variants</DialogTitle>
+            <FormField
+              control={form.control}
+              name="variation"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-2 w-full">
+                  <FormLabel>Option</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-full justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? variationList.find(
+                                (variation) => variation.name === field.value
+                              )?.name
+                            : "Select option"}
+                          <SortUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent align="start" className="p-0">
+                      <Command>
+                        <CommandInput
+                          placeholder="Search option..."
+                          className="h-9"
+                          onValueChange={(e) => {
+                            // debouncedSetSearchParams(e);
+                          }}
+                        />
+                        <Button
+                          variant={"outline"}
+                          disabled={!addCategory}
+                          onClick={() => {
+                            // if (searchCategory) {
+                            //   insertProductCategoryList({
+                            //     value: searchCategory,
+                            //   });
+                            // }
+                          }}
+                        >
+                          + Add Option
+                        </Button>
+                        <CommandList>
+                          <CommandEmpty>No option found.</CommandEmpty>
+                          <CommandGroup>
+                            {variationList.map((variation) => (
+                              <div
+                                key={variation.id}
+                                className="flex gap-2 w-full"
+                              >
+                                <CommandItem
+                                  value={variation.name as string}
+                                  onSelect={() => {
+                                    form.setValue(
+                                      "variation",
+                                      variation.name as string
+                                    );
+                                  }}
+                                  className="w-full"
+                                >
+                                  {variation.name}
+                                  <CheckIcon
+                                    className={cn(
+                                      "ml-auto h-4 w-4",
+                                      variation.name === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  <Dialog data-value={variation.name}>
+                                    <DialogTrigger asChild>
+                                      <Button variant={"ghostCancel"}>
+                                        <DeleteIcon className="ml-auto h-4 w-4" />
+                                      </Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                      <DialogHeader>
+                                        <DialogTitle>
+                                          You're deleting "{`${variation.name}`}
+                                          ", are you sure?
+                                        </DialogTitle>
+                                        <DialogDescription>
+                                          This action cannot be undone. This
+                                          will permanently a category from our
+                                          data and server.
+                                        </DialogDescription>
+                                      </DialogHeader>
+                                      <div className="flex w-full justify-end gap-4">
+                                        <DialogClose asChild>
+                                          <Button variant={"ghostCancel"}>
+                                            Cancel
+                                          </Button>
+                                        </DialogClose>
+                                        <DialogClose asChild>
+                                          <Button
+                                            variant={"destructive"}
+                                            onClick={() => {
+                                              // deleteProductCategoryList(
+                                              //   variation.id
+                                              // );
+                                              // form.setValue("variation", "");
+                                            }}
+                                          >
+                                            Delete
+                                          </Button>
+                                        </DialogClose>
+                                      </div>
+                                    </DialogContent>
+                                  </Dialog>
+                                </CommandItem>
+                              </div>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  {/* <FormDescription>
+                    This is the language that will be used in the dashboard.
+                  </FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button>Add Variation</Button>
+            <VariationTable variationOptionList={variationOptionList} />
           </div>
           <div className="w-full flex justify-end gap-4">
             <DialogClose asChild>
